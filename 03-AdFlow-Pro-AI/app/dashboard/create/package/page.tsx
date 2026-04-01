@@ -1,93 +1,139 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ArrowRight, CheckCircle2, CircleX, Gauge, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, ArrowRight } from 'lucide-react'
-import { DUMMY_PACKAGES } from '@/lib/dummy-data'
+
+const plans = [
+  {
+    id: 1,
+    name: 'Basic',
+    price: '$49',
+    period: '/week',
+    features: ['7 days listing duration', 'Standard marketplace placement', 'Basic analytics dashboard'],
+    disabled: ['Featured badge', 'Priority support'],
+  },
+  {
+    id: 2,
+    name: 'Standard',
+    price: '$149',
+    period: '/week',
+    featured: true,
+    features: ['14 days listing duration', 'Featured marketplace badge', 'Daily performance emails', 'Priority support ticket access'],
+    disabled: ['Custom conversion tracking'],
+  },
+  {
+    id: 3,
+    name: 'Premium',
+    price: '$399',
+    period: '/week',
+    features: ['30 days listing duration', 'Top-of-feed placement', 'Custom API integrations', 'Priority 24/7 account manager', 'Featured badge + social shoutout'],
+    disabled: [],
+  },
+]
 
 export default function SelectPackagePage() {
   const router = useRouter()
-  const [selectedPkg, setSelectedPkg] = useState<number | null>(null)
-
-  const handleContinue = () => {
-    if (selectedPkg === null) return
-    router.push('/dashboard/create/payment')
-  }
+  const [selectedPlan, setSelectedPlan] = useState(2)
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div>
-        <h1 className="text-3xl font-extrabold tracking-tight mb-2">Select a Package</h1>
-        <p className="text-muted-foreground text-lg">Choose a promotion package to reach buyers faster.</p>
-      </div>
+    <div className="space-y-8">
+      <section className="text-center">
+        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#b6bcff]">Pricing Plans</p>
+        <h1 className="mt-6 text-balance text-5xl font-extrabold tracking-tight text-white sm:text-6xl">The Luminous Ledger</h1>
+        <p className="mx-auto mt-6 max-w-4xl text-xl leading-9 text-slate-300">
+          Choose the sponsorship tier that matches your growth velocity. Precision-crafted visibility for the modern digital curator.
+        </p>
+      </section>
 
-      <div className="flex items-center gap-3 mb-8 px-2">
-        <div className="flex-1 h-2.5 rounded-full shadow-inner bg-indigo-600" />
-        <div className="flex-1 h-2.5 rounded-full shadow-inner bg-gradient-to-r from-indigo-500 to-purple-500" />
-        <div className="flex-1 h-2.5 rounded-full shadow-inner bg-muted" />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {DUMMY_PACKAGES.map((pkg) => (
-          <Card 
-            key={pkg.id} 
-            className={`relative flex flex-col cursor-pointer transition-all duration-200 border-2 ${selectedPkg === pkg.id ? 'border-indigo-600 shadow-xl shadow-indigo-500/10 ring-4 ring-indigo-600/10' : 'border-border/60 hover:border-indigo-400/50 hover:shadow-md'}`}
-            onClick={() => setSelectedPkg(pkg.id)}
-          >
-            {pkg.is_featured && (
-              <div className="absolute top-0 inset-x-0 -translate-y-1/2 flex justify-center">
-                <Badge className="bg-amber-500 hover:bg-amber-600 text-amber-950 px-3 py-1 text-xs font-bold shadow-md">RECOMMENDED</Badge>
+      <section className="grid gap-6 xl:grid-cols-3">
+        {plans.map((plan) => {
+          const isSelected = selectedPlan === plan.id
+          return (
+            <div
+              key={plan.id}
+              onClick={() => setSelectedPlan(plan.id)}
+              className={`relative cursor-pointer rounded-[30px] border p-8 text-left shadow-[0_20px_60px_rgba(2,7,25,0.28)] transition ${plan.featured || isSelected ? 'border-[#5b4df7] bg-[#272f4b]' : 'border-white/5 bg-[#1a223b] hover:border-white/15'}`}
+            >
+              {plan.featured && (
+                <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-[#6255ff] to-[#189ced] px-5 py-1.5 text-xs font-black uppercase tracking-[0.18em] text-white">
+                  Most Popular
+                </span>
+              )}
+              <h2 className="text-4xl font-extrabold text-white">{plan.name}</h2>
+              <div className="mt-4 flex items-end gap-2">
+                <span className="text-6xl font-extrabold text-white">{plan.price}</span>
+                <span className="pb-2 text-lg text-slate-400">{plan.period}</span>
               </div>
-            )}
-            
-            {selectedPkg === pkg.id && (
-              <div className="absolute top-4 right-4">
-                <CheckCircle2 className="h-6 w-6 text-indigo-600 animate-in zoom-in" />
-              </div>
-            )}
 
-            <CardHeader className="text-center pt-8 pb-4">
-              <CardTitle className="text-xl">{pkg.name}</CardTitle>
-              <div className="mt-4 flex items-baseline justify-center">
-                <span className="text-4xl font-extrabold tracking-tight">${pkg.price}</span>
+              <div className="mt-10 space-y-5 text-lg text-slate-300">
+                {plan.features.map((feature) => (
+                  <div key={feature} className="flex gap-3">
+                    <CheckCircle2 className="mt-1 h-5 w-5 flex-none text-[#bfbeff]" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+                {plan.disabled.map((feature) => (
+                  <div key={feature} className="flex gap-3 text-slate-500">
+                    <CircleX className="mt-1 h-5 w-5 flex-none text-slate-600" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
               </div>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <ul className="space-y-4 py-4 border-t border-border/50">
-                <li className="flex items-center text-sm font-medium">
-                  <CheckCircle2 className="w-5 h-5 mr-3 text-indigo-500" />
-                  Active for {pkg.duration_days} days
-                </li>
-                <li className="flex items-center text-sm font-medium">
-                  <CheckCircle2 className="w-5 h-5 mr-3 text-indigo-500" />
-                  Rank Weight: {pkg.weight}x
-                </li>
-                {pkg.is_featured && (
-                  <li className="flex items-center text-sm font-bold">
-                    <CheckCircle2 className="w-5 h-5 mr-3 text-indigo-500" />
-                    Featured placement
-                  </li>
-                )}
-              </ul>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      <div className="pt-8 flex justify-between items-center border-t border-border/60 mt-4">
-        <Button variant="ghost" onClick={() => router.back()} className="h-12 px-6 font-medium">Back</Button>
-        <Button 
-          size="lg" 
-          onClick={handleContinue} 
-          disabled={selectedPkg === null}
-          className="bg-indigo-600 hover:bg-indigo-700 h-14 px-8 font-bold text-base shadow-md shadow-indigo-500/20"
-        >
-          Continue to Payment <ArrowRight className="ml-2 w-5 h-5" />
-        </Button>
-      </div>
+              <div className="mt-10">
+                <Button
+                  className={`h-14 w-full rounded-2xl text-xl font-bold ${plan.featured || isSelected ? 'af-gradient text-white' : 'border border-white/15 bg-transparent text-white hover:bg-white/5'}`}
+                  variant={plan.featured || isSelected ? 'default' : 'outline'}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    router.push('/dashboard/create/payment')
+                  }}
+                >
+                  {plan.featured ? 'Get Started' : 'Select Plan'}
+                </Button>
+              </div>
+            </div>
+          )
+        })}
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-[1.6fr_0.8fr_0.8fr]">
+        <div className="af-panel p-8">
+          <h3 className="text-4xl font-extrabold text-white">Enterprise Solutions</h3>
+          <p className="mt-4 max-w-2xl text-xl leading-9 text-slate-300">
+            Need more than 50 ads per month? Contact our sales team for bespoke marketplace white-labelling and volume discounts.
+          </p>
+          <button type="button" className="mt-10 inline-flex items-center gap-3 text-2xl font-semibold text-[#d7dbff] transition hover:text-white">
+            Talk to Sales <ArrowRight className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="af-panel flex flex-col items-center justify-center p-8 text-center">
+          <ShieldCheck className="h-12 w-12 text-[#8fd0ff]" />
+          <h3 className="mt-8 text-3xl font-extrabold text-white">Secure Ledger</h3>
+          <p className="mt-4 text-lg leading-8 text-slate-300">All transactions are encrypted using enterprise-grade protocols.</p>
+        </div>
+
+        <div className="af-panel flex flex-col items-center justify-center p-8 text-center">
+          <Gauge className="h-12 w-12 text-[#c3c6ff]" />
+          <h3 className="mt-8 text-3xl font-extrabold text-white">Instant Live</h3>
+          <p className="mt-4 text-lg leading-8 text-slate-300">Your ad goes live within seconds of payment confirmation.</p>
+        </div>
+      </section>
+
+      <footer className="flex flex-col gap-4 border-t border-white/5 px-1 pt-8 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-2xl font-extrabold uppercase text-white">AdFlow Pro</p>
+          <p className="mt-2">© 2024 AdFlow Pro. The Digital Curator.</p>
+        </div>
+        <div className="flex flex-wrap gap-6 text-xs font-semibold uppercase tracking-[0.18em]">
+          <span>Privacy Policy</span>
+          <span>Terms of Service</span>
+          <span>Cookie Policy</span>
+        </div>
+      </footer>
     </div>
   )
 }

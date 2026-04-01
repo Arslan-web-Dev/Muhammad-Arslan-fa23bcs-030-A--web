@@ -1,35 +1,43 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { Bell, CircleUserRound } from 'lucide-react'
+
+const navItems = [
+  { label: 'Marketplace', href: '/explore' },
+  { label: 'Help', href: '/dashboard/settings' },
+  { label: 'Support', href: '/auth/login' },
+]
 
 export function MainNav() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center px-4 md:px-8 mx-auto">
-        <div className="mr-8 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block bg-gradient-to-br from-indigo-500 to-purple-600 bg-clip-text text-transparent text-xl tracking-tight">
-              AdFlow Pro
-            </span>
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-[#161f37]/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-[72px] w-full max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="text-2xl font-extrabold tracking-tight text-white">
+            AdFlow Pro
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link href="/explore" className="transition-colors hover:text-foreground/80 text-foreground/60">Explore</Link>
-            <Link href="/#pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">Pricing</Link>
+          <nav className="hidden items-center gap-7 text-sm font-medium text-slate-300 md:flex">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className="transition hover:text-white">
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Search can go here */}
-          </div>
-          <nav className="flex items-center gap-2">
-            <ThemeToggle />
-            <Link href="/auth/login">
-              <Button variant="ghost" size="sm">Login</Button>
-            </Link>
-            <Link href="/dashboard/create">
-              <Button size="sm" className="hidden sm:flex bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20">Post Ad</Button>
-            </Link>
-          </nav>
+
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/5 bg-white/5 text-slate-200 transition hover:bg-white/10"
+            aria-label="Notifications"
+          >
+            <Bell className="h-4 w-4" />
+          </button>
+          <Link
+            href="/dashboard"
+            className="grid h-10 w-10 place-items-center rounded-full border border-cyan-400/40 bg-gradient-to-br from-[#26314f] to-[#1b2442] text-slate-100 shadow-[0_0_0_3px_rgba(21,153,236,0.1)]"
+          >
+            <CircleUserRound className="h-5 w-5" />
+          </Link>
         </div>
       </div>
     </header>

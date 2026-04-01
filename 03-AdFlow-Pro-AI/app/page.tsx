@@ -1,202 +1,221 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowRight, BadgeCheck, Rocket, Sparkles, Star } from 'lucide-react'
 import { MainNav } from '@/components/layouts/main-nav'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, ArrowRight, ShieldCheck, Zap, BarChart3 } from 'lucide-react'
-import { DUMMY_ADS, DUMMY_PACKAGES } from '@/lib/dummy-data'
+import { DUMMY_ADS } from '@/lib/dummy-data'
+
+const featuredListings = [
+  {
+    tier: 'Premium Tier',
+    category: 'Analytics Platform',
+    title: 'Sidebar Banner - 7M Views',
+    price: '$1,200',
+    meta: '30 Day Placement',
+    image: DUMMY_ADS[0].thumbnail,
+  },
+  {
+    tier: 'Standard Tier',
+    category: 'Curated Newsletter',
+    title: 'Main Slot - Dev Digest',
+    price: '$450',
+    meta: 'Per Issue',
+    image: DUMMY_ADS[2].thumbnail,
+  },
+  {
+    tier: 'Premium Tier',
+    category: 'Product Search',
+    title: 'Search Top Result',
+    price: '$2,800',
+    meta: '14 Day Exclusive',
+    image: DUMMY_ADS[1].thumbnail,
+  },
+  {
+    tier: 'Basic Tier',
+    category: 'Blog Network',
+    title: 'Native Text Placement',
+    price: '$150',
+    meta: '7 Day Slot',
+    image: DUMMY_ADS[2].thumbnail,
+  },
+]
+
+const packages = [
+  {
+    name: 'Basic',
+    price: '$49',
+    period: '/week',
+    features: ['Single Listing Placement', 'Standard Analytics', 'Community Support'],
+  },
+  {
+    name: 'Standard',
+    price: '$149',
+    period: '/month',
+    features: ['3 Concurrent Listings', 'Advanced Audience Insights', 'Priority Review', 'Ad Optimization AI'],
+    featured: true,
+  },
+  {
+    name: 'Premium',
+    price: '$499',
+    period: '/quarter',
+    features: ['Unlimited Listings', 'Full API Access', 'Custom White-labelling', 'Dedicated Account Lead'],
+  },
+]
 
 export default function Home() {
-  const featuredAds = DUMMY_ADS.filter(ad => ad.is_featured);
-
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="af-shell">
       <MainNav />
-      
-      <main className="flex-1">
-        {/* HERO SECTION */}
-        <section className="relative overflow-hidden bg-background pt-24 pb-32">
-          <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20" />
-          <div className="container px-4 md:px-6 relative z-10 mx-auto max-w-6xl">
-            <div className="flex flex-col items-center text-center space-y-8">
-              <Badge variant="secondary" className="px-3 py-1 text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
-                🚀 The Next Generation Marketplace
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight max-w-4xl text-foreground leading-[1.1]">
-                Discover & Sell <br className="hidden sm:block"/>
-                <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Premium Listings</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                AdFlow Pro connects top verified sellers with serious buyers. Feature your ads, boost your visibility, and manage everything from a smart unified dashboard.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
-                <Link href="/explore" className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full text-lg h-14 px-8 bg-indigo-600 hover:bg-indigo-700 shadow-xl shadow-indigo-500/20">
-                    Explore Listings
-                  </Button>
-                </Link>
-                <Link href="/dashboard/create" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full text-lg h-14 px-8 border-indigo-200 text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-950/50 backdrop-blur-sm">
-                    Post an Ad
-                  </Button>
-                </Link>
+      <main>
+        <section className="relative overflow-hidden px-4 pb-24 pt-16 sm:px-6 lg:px-10 lg:pt-24">
+          <div className="mx-auto max-w-[1280px]">
+            <div className="relative overflow-hidden rounded-[36px] border border-white/5 bg-[#0d1530] px-6 py-16 shadow-[0_35px_120px_rgba(2,7,25,0.45)] sm:px-10 lg:px-20 lg:py-28">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(93,77,247,0.18),transparent_30%),radial-gradient(circle_at_65%_55%,rgba(21,153,236,0.18),transparent_28%)]" />
+              <div className="relative mx-auto flex max-w-4xl flex-col items-center text-center">
+                <span className="af-pill mb-8 gap-2 bg-[#1b2146] text-[#dce2ff]"><Sparkles className="h-3.5 w-3.5 text-[#6c6cff]" /> New. AI-Powered Targeting</span>
+                <h1 className="text-balance text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl">
+                  Launch Your Ads
+                  <br />
+                  <span className="af-gradient-text">Like a Pro</span>
+                </h1>
+                <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+                  Access high-traffic sponsorship opportunities and premium placements across the digital curator network. Precision data meets editorial excellence.
+                </p>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <Link href="/dashboard/create">
+                    <Button className="af-gradient h-14 rounded-2xl px-8 text-base font-semibold text-white shadow-lg shadow-[#5b4df7]/20 hover:opacity-95">
+                      Post Ad <Rocket className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/explore">
+                    <Button variant="secondary" className="h-14 rounded-2xl border border-white/5 bg-white/10 px-8 text-base font-semibold text-white hover:bg-white/15">
+                      Explore Ads
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* FEATURES */}
-        <section className="py-20 bg-muted/40 border-y border-border/40">
-          <div className="container px-4 mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center text-center p-8 bg-background/50 backdrop-blur-sm rounded-3xl shadow-sm border border-border/50 hover:border-indigo-500/30 transition-colors">
-                <div className="h-16 w-16 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-6 shadow-inner">
-                  <ShieldCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+        <section className="border-y border-white/5 bg-white/[0.02] px-4 py-8 sm:px-6 lg:px-10">
+          <div className="mx-auto max-w-[1280px] text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">Trusted by Industry Leaders</p>
+            <div className="mt-6 grid grid-cols-4 gap-6 text-slate-500 sm:grid-cols-6">
+              {['MetaFlow', 'Curio', 'Pulse', 'Apex', 'Signal', 'Arc'].map((name) => (
+                <div key={name} className="rounded-2xl border border-white/5 bg-white/[0.03] px-3 py-4 text-sm font-semibold">
+                  {name}
                 </div>
-                <h3 className="text-xl font-bold mb-3">Verified Sellers</h3>
-                <p className="text-muted-foreground leading-relaxed">Every premium seller goes through our manual verification process to ensure trust.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-8 bg-background/50 backdrop-blur-sm rounded-3xl shadow-sm border border-border/50 hover:border-purple-500/30 transition-colors">
-                <div className="h-16 w-16 rounded-2xl bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mb-6 shadow-inner">
-                  <Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Instant Visibility</h3>
-                <p className="text-muted-foreground leading-relaxed">Our intelligent ranking algorithm guarantees your listings get the views they deserve.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-8 bg-background/50 backdrop-blur-sm rounded-3xl shadow-sm border border-border/50 hover:border-blue-500/30 transition-colors">
-                <div className="h-16 w-16 rounded-2xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-6 shadow-inner">
-                  <BarChart3 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Smart Analytics</h3>
-                <p className="text-muted-foreground leading-relaxed">Track impressions, clicks, and conversions straight from your personal dashboard.</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* FEATURED ADS SECTION */}
-        <section className="py-24 relative">
-          <div className="container px-4 mx-auto max-w-6xl">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
+        <section className="px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
+          <div className="mx-auto max-w-[1280px]">
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight mb-3">Featured Listings</h2>
-                <p className="text-lg text-muted-foreground">Hand-picked premium listings available now.</p>
+                <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Featured Listings</h2>
+                <p className="mt-2 text-slate-400">Top performing placements currently available.</p>
               </div>
-              <Link href="/explore">
-                <Button variant="outline" className="group border-indigo-200 text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-950/50">
-                  View All <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+              <Link href="/explore" className="inline-flex items-center gap-2 text-sm font-semibold text-[#6d7bff] transition hover:text-[#8ea4ff]">
+                View Marketplace <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredAds.map(ad => (
-                <Link href={`/ad/${ad.slug}`} key={ad.id} className="group">
-                  <Card className="overflow-hidden group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-300 border-border/60 group-hover:border-indigo-500/30 bg-card/50 backdrop-blur-sm h-full flex flex-col">
-                    <div className="relative h-56 w-full overflow-hidden bg-muted">
-                      {ad.is_featured && (
-                        <div className="absolute top-3 right-3 z-10">
-                          <Badge className="bg-amber-500/90 hover:bg-amber-600 backdrop-blur-md shadow-lg font-medium px-3 py-1">⭐ Featured</Badge>
-                        </div>
-                      )}
-                      <Image 
-                        src={ad.thumbnail} 
-                        alt={ad.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {featuredListings.map((listing) => (
+                <article key={listing.title} className="overflow-hidden rounded-[22px] border border-white/5 bg-[#1a223b] shadow-[0_20px_50px_rgba(2,7,25,0.28)]">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image src={listing.image} alt={listing.title} fill className="object-cover opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#101728] via-transparent to-transparent" />
+                    <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-[#1c2145]/90 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-white">
+                      {listing.tier}
                     </div>
-                    <CardHeader className="p-6 pb-2">
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">{ad.category.name}</span>
-                        <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md">{ad.city.name}</span>
-                      </div>
-                      <h3 className="font-bold text-xl line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{ad.title}</h3>
-                    </CardHeader>
-                    <CardContent className="p-6 pt-2 pb-4 flex-1">
-                      <p className="text-3xl font-extrabold tracking-tight">${ad.price.toLocaleString()}</p>
-                    </CardContent>
-                    <CardFooter className="p-6 pt-0 flex justify-between items-center border-t border-border/40 mt-auto bg-muted/10 py-4">
-                      <div className="flex items-center text-sm font-medium text-foreground/80">
-                        {ad.seller.name}
-                        {ad.seller.is_verified && <CheckCircle2 className="w-4 h-4 ml-1.5 text-green-500" />}
-                      </div>
-                      <span className="text-xs text-muted-foreground font-medium">Just now</span>
-                    </CardFooter>
-                  </Card>
-                </Link>
+                  </div>
+                  <div className="space-y-3 px-4 py-5">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">{listing.category}</p>
+                    <h3 className="text-2xl font-bold text-white">{listing.title}</h3>
+                    <div className="flex items-end justify-between gap-3">
+                      <p className="text-3xl font-extrabold text-white">{listing.price}</p>
+                      <p className="text-xs font-medium text-slate-400">{listing.meta}</p>
+                    </div>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* PRICING */}
-        <section id="pricing" className="py-24 bg-gradient-to-b from-background to-muted/30 border-t border-border/40">
-          <div className="container px-4 mx-auto max-w-6xl">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <Badge variant="outline" className="mb-4 text-indigo-600 border-indigo-200 dark:border-indigo-800 dark:text-indigo-300">Simple Pricing</Badge>
-              <h2 className="text-4xl font-extrabold tracking-tight mb-4">Choose Your Reach</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">Boost your listings to reach more buyers faster. Only pay for what you need.</p>
+        <section id="pricing" className="px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
+          <div className="mx-auto max-w-[1280px]">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Marketplace Packages</h2>
+              <p className="mt-3 text-slate-400">Flexible plans designed for publishers and advertisers of all sizes.</p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center max-w-5xl mx-auto">
-              {DUMMY_PACKAGES.map((pkg) => (
-                <Card key={pkg.id} className={`relative flex flex-col transition-all duration-300 ${pkg.is_featured ? 'border-indigo-500 shadow-2xl shadow-indigo-500/20 md:-translate-y-4 z-10 bg-card' : 'border-border/60 hover:border-indigo-500/30 hover:shadow-xl bg-card/50'}`}>
-                  {pkg.is_featured && (
-                    <div className="absolute top-0 inset-x-0 -translate-y-1/2 flex justify-center">
-                      <Badge className="bg-indigo-600 text-white font-semibold px-4 py-1.5 rounded-full shadow-lg">Most Popular</Badge>
-                    </div>
+            <div className="mt-12 grid gap-6 lg:grid-cols-3">
+              {packages.map((pkg) => (
+                <div
+                  key={pkg.name}
+                  className={`relative rounded-[28px] border bg-[#1a223b] p-8 shadow-[0_20px_50px_rgba(2,7,25,0.28)] ${pkg.featured ? 'border-[#5b4df7] bg-[#2a3152] shadow-[0_24px_70px_rgba(91,77,247,0.18)]' : 'border-white/5'}`}
+                >
+                  {pkg.featured && (
+                    <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-[#6255ff] to-[#189ced] px-4 py-1 text-[11px] font-black uppercase tracking-[0.18em] text-white">
+                      Most Popular
+                    </span>
                   )}
-                  <CardHeader className="text-center pt-10 pb-6">
-                    <h3 className="text-2xl font-bold tracking-tight">{pkg.name}</h3>
-                    <div className="mt-6 flex items-baseline justify-center">
-                      <span className="text-5xl font-extrabold tracking-tighter">${pkg.price}</span>
-                      <span className="text-muted-foreground ml-2 font-medium">/ad</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-1 px-8">
-                    <ul className="space-y-5 py-6 border-t border-border/50">
-                      <li className="flex items-center">
-                        <CheckCircle2 className={`w-5 h-5 mr-3 flex-shrink-0 ${pkg.is_featured ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground'}`} />
-                        <span className="font-medium text-foreground/90">Active for {pkg.duration_days} days</span>
+                  <h3 className="text-3xl font-bold text-white">{pkg.name}</h3>
+                  <div className="mt-3 flex items-end gap-2">
+                    <span className="text-5xl font-extrabold text-white">{pkg.price}</span>
+                    <span className="pb-2 text-sm text-slate-400">{pkg.period}</span>
+                  </div>
+                  <ul className="mt-8 space-y-4 text-sm text-slate-300">
+                    {pkg.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <BadgeCheck className="mt-0.5 h-4.5 w-4.5 text-[#b7b8ff]" />
+                        <span>{feature}</span>
                       </li>
-                      <li className="flex items-center">
-                        <CheckCircle2 className={`w-5 h-5 mr-3 flex-shrink-0 ${pkg.is_featured ? 'text-indigo-600 dark:text-indigo-400' : 'text-muted-foreground'}`} />
-                        <span className="font-medium text-foreground/90">Rank Multiplier: {pkg.weight}x</span>
-                      </li>
-                      {pkg.is_featured && (
-                        <li className="flex items-center">
-                          <CheckCircle2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mr-3 flex-shrink-0" />
-                          <span className="font-semibold bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300 px-2 py-0.5 rounded text-sm">Featured Badge</span>
-                        </li>
-                      )}
-                      {pkg.name === 'Premium' && (
-                        <li className="flex items-center">
-                          <CheckCircle2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mr-3 flex-shrink-0" />
-                          <span className="font-medium text-foreground/90">Priority Approval</span>
-                        </li>
-                      )}
-                    </ul>
-                  </CardContent>
-                  <CardFooter className="px-8 pb-10">
-                    <Button className={`w-full h-12 text-lg font-semibold shadow-sm transition-all ${pkg.is_featured ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-md hover:-translate-y-0.5' : 'hover:-translate-y-0.5'}`} variant={pkg.is_featured ? 'default' : 'outline'}>
-                      Get Started
-                    </Button>
-                  </CardFooter>
-                </Card>
+                    ))}
+                  </ul>
+                  <Button className={`mt-10 h-12 w-full rounded-2xl text-base font-semibold ${pkg.featured ? 'af-gradient text-white' : 'border border-white/10 bg-transparent text-white hover:bg-white/5'}`} variant={pkg.featured ? 'default' : 'outline'}>
+                    {pkg.featured ? 'Choose Plan' : pkg.name === 'Premium' ? 'Contact Sales' : 'Get Started'}
+                  </Button>
+                </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 pb-16 sm:px-6 lg:px-10 lg:pb-20">
+          <div className="mx-auto max-w-[1280px] rounded-[28px] border border-cyan-400/10 bg-gradient-to-r from-[#4f4cf4] to-[#149de9] px-6 py-14 text-center shadow-[0_25px_80px_rgba(20,157,233,0.2)] sm:px-10">
+            <h2 className="text-4xl font-extrabold text-white sm:text-5xl">Ready to Scale Your Reach?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-blue-50/90 sm:text-lg">
+              Join over 2,500+ advertisers who are already leveraging AdFlow Pro to find premium sponsorship opportunities.
+            </p>
+            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+              <Button className="h-12 rounded-2xl bg-black px-8 text-base font-semibold text-white hover:bg-black/90">Start Posting Now</Button>
+              <Button variant="outline" className="h-12 rounded-2xl border-white/20 bg-transparent px-8 text-base font-semibold text-white hover:bg-white/10">Schedule a Demo</Button>
             </div>
           </div>
         </section>
       </main>
-      
-      <footer className="border-t py-12 bg-background">
-        <div className="container px-4 mx-auto max-w-6xl text-center text-muted-foreground font-medium">
-          <p>© {new Date().getFullYear()} AdFlow Pro. All rights reserved.</p>
-          <p>© Designed by Muhammad Arslan</p>
+
+      <footer className="border-t border-white/5 px-4 py-10 sm:px-6 lg:px-10">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-6 text-sm text-slate-400 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-lg font-extrabold uppercase text-white">AdFlow Pro</p>
+            <p className="mt-2">© 2024 AdFlow Pro. The Digital Curator.</p>
+          </div>
+          <div className="flex flex-wrap gap-6 text-xs font-semibold uppercase tracking-[0.18em]">
+            <span>Privacy Policy</span>
+            <span>Terms of Service</span>
+            <span>Cookie Policy</span>
+            <span className="inline-flex items-center gap-2"><Star className="h-3.5 w-3.5" /> Global</span>
+          </div>
         </div>
       </footer>
     </div>
   )
 }
+
+

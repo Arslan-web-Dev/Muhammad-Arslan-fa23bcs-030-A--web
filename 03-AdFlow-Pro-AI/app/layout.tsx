@@ -1,12 +1,22 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { QueryProvider } from '@/components/providers/query-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/components/providers/auth-provider'
 
-const inter = Inter({ subsets: ['latin'] })
+const geistSans = localFont({
+  src: './fonts/GeistVF.woff',
+  variable: '--font-sans',
+  weight: '100 900',
+})
+
+const geistMono = localFont({
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-mono',
+  weight: '100 900',
+})
 
 export const metadata: Metadata = {
   title: 'AdFlow Pro - Sponsored Listing Marketplace',
@@ -19,9 +29,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen bg-background antialiased selection:bg-primary/30 flex flex-col`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <html lang="en" suppressHydrationWarning className="dark">
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased selection:bg-primary/30 flex flex-col`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <QueryProvider>
             <AuthProvider>
               {children}
