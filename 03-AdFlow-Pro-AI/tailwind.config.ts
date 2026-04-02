@@ -18,7 +18,22 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
+      },
       colors: {
+        surface: {
+          DEFAULT: "hsl(var(--surface) / <alpha-value>)",
+          container: {
+            DEFAULT: "hsl(var(--card) / <alpha-value>)",
+            low: "hsl(var(--sidebar) / <alpha-value>)",
+            high: "hsl(var(--surface-container-high) / <alpha-value>)",
+          },
+        },
+        "on-surface": {
+          DEFAULT: "hsl(var(--foreground) / <alpha-value>)",
+          variant: "hsl(var(--on-surface-variant) / <alpha-value>)",
+        },
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",

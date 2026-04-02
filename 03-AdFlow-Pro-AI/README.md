@@ -28,7 +28,24 @@
 
 ---
 
-## 🌟 Project Overview
+## UI and design system
+
+The interface follows a **dark Material-inspired marketplace** theme (deep navy surfaces, indigo primary `#4f46e5`, cyan accent, soft lavender text on surfaces).
+
+| Token / area | Implementation |
+|----------------|----------------|
+| Surfaces | `app/globals.css` — CSS variables (`--background`, `--card`, `--sidebar`, etc.) and utilities (`.af-glass-header`, `.af-gradient`, `.af-hero-gradient`) |
+| Typography | [Inter](https://fonts.google.com/specimen/Inter) via `next/font/google` in `app/layout.tsx` |
+| Public chrome | `components/layouts/main-nav.tsx` (sticky glass header, active nav for Marketplace + ad detail), `components/layouts/site-footer.tsx` |
+| Marketplace grid | `app/explore/page.tsx` — filter sidebar + card grid aligned with the Explore Ads mockup |
+| Listing detail | `app/ad/[slug]/page.tsx` — gallery, description panel, seller card, location strip |
+| Dashboard | `components/layouts/dashboard-shell.tsx` + `dashboard-sidebar.tsx` — sidebar + top bar using the same token set |
+
+Tailwind aliases: `surface`, `surface-container`, `surface-container-low`, `on-surface`, `on-surface-variant` (see `tailwind.config.ts`).
+
+---
+
+## Project overview
 
 **AdFlow Pro** is a premium classified-ad SaaS platform that bridges **verified sellers** with **serious buyers**. The platform supports:
 
@@ -61,7 +78,7 @@
 | **Charts** | [Recharts v3](https://recharts.org/) | Analytics charts in the admin dashboard |
 | **Notifications** | [Sonner](https://sonner.emilkowal.ski/) | Toast notifications (top-right, rich colors) |
 | **Animations** | `tailwindcss-animate` + `tw-animate-css` | Smooth micro-animations throughout the UI |
-| **Fonts** | Inter (Google Fonts via `next/font`) | Clean, modern typography |
+| **Fonts** | Inter (`next/font/google` in `app/layout.tsx`) | Matches the AdFlow Pro UI spec |
 
 ---
 
@@ -147,9 +164,10 @@ adflow-pro/
 │
 ├── components/
 │   ├── layouts/
-│   │   ├── dashboard-sidebar.tsx # Collapsible sidebar with RBAC-filtered nav links
-│   │   ├── dashboard-shell.tsx   # Wrapper that pairs sidebar + page content
-│   │   └── main-nav.tsx          # Public top navigation bar with logo + CTA
+│   │   ├── dashboard-sidebar.tsx # Sidebar with RBAC-filtered nav + Create Ad CTA
+│   │   ├── dashboard-shell.tsx   # Sidebar + glass top bar + main content area
+│   │   ├── main-nav.tsx          # Public top nav (client: active routes, search on lg+)
+│   │   └── site-footer.tsx       # Shared footer for landing, explore, and ad detail
 │   │
 │   ├── providers/
 │   │   └── query-provider.tsx    # TanStack Query QueryClient provider (client component)
@@ -574,8 +592,11 @@ NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 # Required: Your Supabase anonymous/public API key
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY_HERE
 
+# Optional — AI helpers (e.g. ad copy generation)
+# OPENAI_API_KEY=sk-...
 
--...
+# Optional — cron protection
+# CRON_SECRET=your-long-random-string
 ```
 
 > **Security:** Never commit `.env.local` to git. The `.gitignore` already excludes it.
@@ -643,7 +664,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser. 🎉
 | File | Purpose |
 |---|---|
 | `middleware.ts` | Route guard — runs before EVERY page request. Handles auth + RBAC redirects. |
-| `app/layout.tsx` | Root HTML shell: sets Inter font, wraps in `QueryProvider`, mounts `Toaster` |
+| `app/layout.tsx` | Root layout: Inter font, `ThemeProvider`, `QueryProvider`, `AuthProvider`, `Toaster` |
 | `app/page.tsx` | Public landing page: Hero → Features → Featured Ads → Pricing |
 | `lib/ranking-system.ts` | Pure function that scores an ad for search ranking. No side effects. |
 | `lib/dummy-data.ts` | Hardcoded seed data for local development (replaces live DB calls) |

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -13,7 +13,6 @@ import {
   Menu,
   Settings,
   ShoppingBag,
-  UserRound,
   Users,
   X,
   Plus,
@@ -55,20 +54,22 @@ export function DashboardSidebar() {
   const links = getLinks(role)
 
   const sidebarContent = (
-    <div className="flex h-full flex-col bg-[#182138] text-slate-200">
-      <div className="border-b border-white/5 px-5 py-7">
-        <Link href="/" className="flex items-center gap-4">
-          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-[#5b4df7] to-[#169cec] shadow-lg shadow-[#5b4df7]/20">
-            <LayoutGrid className="h-6 w-6 text-white" />
+    <div className="flex h-full flex-col text-on-surface">
+      <div className="border-b border-border/20 px-5 py-6">
+        <Link href="/" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
+          <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary shadow-lg shadow-primary/25">
+            <LayoutGrid className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <p className="text-[2rem] font-extrabold leading-none tracking-tight text-white">AdFlow Pro</p>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Premium Tier</p>
+            <p className="text-lg font-bold leading-tight text-on-surface">AdFlow Pro</p>
+            <p className="mt-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              Premium Tier
+            </p>
           </div>
         </Link>
       </div>
 
-      <nav className="flex-1 space-y-2 px-4 py-8">
+      <nav className="flex-1 space-y-1 px-3 py-6">
         {links.map((link) => {
           const Icon = link.icon
           const active = pathname === link.href || pathname.startsWith(`${link.href}/`)
@@ -76,11 +77,13 @@ export function DashboardSidebar() {
             <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}>
               <span
                 className={cn(
-                  'flex items-center gap-4 rounded-2xl px-5 py-4 text-[1.05rem] font-medium transition',
-                  active ? 'bg-[#232a58] text-[#6457ff]' : 'text-slate-200 hover:bg-white/5'
+                  'flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                  active
+                    ? 'bg-primary/15 text-primary'
+                    : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
                 )}
               >
-                <Icon className="h-6 w-6" />
+                <Icon className="h-5 w-5 shrink-0" />
                 {link.name}
               </span>
             </Link>
@@ -88,22 +91,22 @@ export function DashboardSidebar() {
         })}
       </nav>
 
-      <div className="px-4 pb-6">
+      <div className="px-3 pb-4">
         <Link href="/dashboard/create" onClick={() => setMobileOpen(false)}>
-          <span className="af-gradient flex items-center justify-center gap-3 rounded-2xl px-5 py-4 text-xl font-semibold text-white shadow-lg shadow-cyan-500/10">
-            <Plus className="h-6 w-6" />
+          <span className="af-gradient flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20">
+            <Plus className="h-5 w-5" />
             Create Ad
           </span>
         </Link>
       </div>
 
-      <div className="mt-auto border-t border-white/5 px-4 py-6">
+      <div className="mt-auto border-t border-border/20 px-3 py-4">
         <button
           type="button"
           onClick={() => signOut()}
-          className="flex w-full items-center gap-4 rounded-2xl px-5 py-4 text-left text-[1.05rem] font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
         >
-          <LogOut className="h-6 w-6" />
+          <LogOut className="h-5 w-5" />
           Log out
         </button>
       </div>
@@ -111,10 +114,10 @@ export function DashboardSidebar() {
   )
 
   return (
-    <>
+    <div className="md:flex md:h-screen md:w-64 md:flex-shrink-0 md:flex-col">
       <button
         type="button"
-        className="fixed left-4 top-4 z-50 grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-[#182138] text-white md:hidden"
+        className="fixed left-4 top-4 z-50 grid h-11 w-11 place-items-center rounded-xl border border-border/40 bg-surface-container-low text-on-surface md:hidden"
         onClick={() => setMobileOpen((open) => !open)}
         aria-label="Toggle sidebar"
       >
@@ -124,20 +127,20 @@ export function DashboardSidebar() {
       {mobileOpen && (
         <button
           type="button"
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(false)}
           aria-label="Close sidebar overlay"
         />
       )}
 
-      <aside className={cn('fixed inset-y-0 left-0 z-50 w-[294px] transition-transform duration-300 md:hidden', mobileOpen ? 'translate-x-0' : '-translate-x-full')}>
+      <aside
+        className={cn(
+          'fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-border/20 bg-surface-container-low transition-transform duration-300 md:static md:z-0 md:translate-x-0',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        )}
+      >
         {sidebarContent}
       </aside>
-
-      <aside className="hidden w-[294px] flex-col border-r border-white/5 md:flex">
-        {sidebarContent}
-      </aside>
-    </>
+    </div>
   )
 }
-

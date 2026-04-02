@@ -1,142 +1,176 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Bath, Bed, CheckCircle2, ChevronRight, Flag, Heart, Mail, MapPin, Star } from 'lucide-react'
 import { MainNav } from '@/components/layouts/main-nav'
+import { SiteFooter } from '@/components/layouts/site-footer'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle2, MapPin, Calendar, Share2, Heart, Flag, ShieldCheck } from 'lucide-react'
 import { DUMMY_ADS } from '@/lib/dummy-data'
 
 export default function AdDetailPage({ params }: { params: { slug: string } }) {
-  const ad = DUMMY_ADS.find(a => a.slug === params.slug)
+  const ad = DUMMY_ADS.find((a) => a.slug === params.slug)
 
   if (!ad) {
     notFound()
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background text-on-surface">
       <MainNav />
-      <div className="bg-muted/20 pb-20">
-        <div className="bg-card border-b shadow-sm mb-8 pt-6 pb-2">
-          <div className="container px-4 mx-auto max-w-6xl">
-            {/* Breadcrumbs */}
-            <div className="text-sm text-muted-foreground flex items-center gap-2 font-medium">
-              <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-              <span className="text-border">/</span>
-              <Link href="/explore" className="hover:text-foreground transition-colors">Explore</Link>
-              <span className="text-border">/</span>
-              <span className="text-foreground">{ad.category.name}</span>
-            </div>
-          </div>
-        </div>
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 pb-12 pt-24 md:px-8">
+        {/* Breadcrumb */}
+        <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm font-medium text-on-surface-variant">
+          <Link href="/explore" className="transition-colors hover:text-on-surface">
+            Marketplace
+          </Link>
+          <ChevronRight className="h-4 w-4 shrink-0 opacity-70" />
+          <span>{ad.category.name}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 opacity-70" />
+          <span className="text-on-surface">{ad.title}</span>
+        </nav>
 
-        <div className="container px-4 mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-card rounded-3xl overflow-hidden border border-border/60 shadow-sm">
-                <div className="relative aspect-[16/9] w-full bg-muted">
-                  <Image 
-                    src={ad.thumbnail} 
-                    alt={ad.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  {ad.is_featured && (
-                    <div className="absolute top-4 right-4 z-10">
-                      <Badge className="bg-amber-500/90 hover:bg-amber-600 backdrop-blur-md shadow-lg text-sm px-4 py-1.5 font-medium rounded-full text-amber-950">Featured</Badge>
-                    </div>
-                  )}
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-8">
+            <section className="space-y-4">
+              <div className="group relative aspect-video w-full overflow-hidden rounded-xl bg-surface-container">
+                <Image src={ad.thumbnail} alt={ad.title} fill className="object-cover" priority />
+                {ad.is_featured && (
+                  <div className="absolute left-4 top-4">
+                    <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary-foreground">
+                      Premium Package
+                    </span>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-background/50 text-on-surface backdrop-blur-md transition-colors hover:bg-background/70"
+                  aria-label="Save listing"
+                >
+                  <Heart className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="grid grid-cols-4 gap-3 md:grid-cols-6">
+                <div className="relative aspect-square overflow-hidden rounded-lg ring-2 ring-primary ring-offset-2 ring-offset-background">
+                  <Image src={ad.thumbnail} alt="" fill className="object-cover" />
                 </div>
-                
-                <div className="p-8 md:p-10">
-                  <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
-                    <div>
-                      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 leading-tight">{ad.title}</h1>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-medium">
-                        <span className="flex items-center"><MapPin className="w-4 h-4 mr-1.5 text-indigo-500" /> {ad.city.name}, {ad.city.state}</span>
-                        <span className="flex items-center"><Calendar className="w-4 h-4 mr-1.5 text-indigo-500" /> Posted 2 days ago</span>
-                        <span className="text-[10px] font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 px-2 py-1 rounded uppercase tracking-widest">{ad.category.name}</span>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="icon" className="rounded-full shadow-sm hover:text-indigo-600 hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors"><Share2 className="w-4 h-4" /></Button>
-                      <Button variant="outline" size="icon" className="rounded-full shadow-sm hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 hover:border-red-200 dark:hover:border-red-900 transition-colors"><Heart className="w-4 h-4" /></Button>
-                    </div>
-                  </div>
-
-                  <div className="text-5xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter mb-10">
-                    ${ad.price.toLocaleString()}
-                  </div>
-
-                  <div className="prose prose-slate dark:prose-invert max-w-none">
-                    <h3 className="text-xl font-bold mb-4 tracking-tight">Description</h3>
-                    <p className="text-foreground/80 leading-relaxed whitespace-pre-wrap text-lg">{ad.description}</p>
-                    <p className="text-foreground/80 leading-relaxed mt-4 text-lg">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                  </div>
+                <div className="relative aspect-square overflow-hidden rounded-lg opacity-90 transition-opacity hover:opacity-100">
+                  <Image src={ad.thumbnail} alt="" fill className="object-cover" />
                 </div>
               </div>
-            </div>
+            </section>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              <Card className="border-border/60 shadow-sm sticky top-24 rounded-3xl overflow-hidden">
-                <div className="h-2 bg-gradient-to-r from-indigo-500 to-purple-500" />
-                <CardContent className="p-8">
-                  <h3 className="text-lg font-bold mb-6 tracking-tight">Seller Information</h3>
-                  
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 flex items-center justify-center text-2xl font-bold text-indigo-700 dark:text-indigo-300 shadow-inner">
-                      {ad.seller.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-bold text-lg flex items-center">
-                        {ad.seller.name}
-                        {ad.seller.is_verified && (
-                          <span title="Verified Seller" className="flex items-center">
-                            <CheckCircle2 className="w-5 h-5 ml-1.5 text-green-500" />
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground font-medium">Member since 2023</p>
-                    </div>
+            <section className="space-y-6 rounded-xl bg-surface-container p-8">
+              <h2 className="text-xl font-bold text-on-surface">Listing Description</h2>
+              <div className="prose prose-invert max-w-none text-on-surface-variant leading-relaxed">
+                <p>{ad.description}</p>
+                <ul className="mt-6 grid list-none grid-cols-1 gap-2 p-0 md:grid-cols-2">
+                  {['Detailed photos & verified seller', 'Secure messaging through AdFlow', 'Location context on map below'].map((line) => (
+                    <li key={line} className="flex items-center gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          </div>
+
+          <div className="space-y-6 lg:col-span-4">
+            <section className="glass-effect space-y-4 rounded-xl border border-border/30 bg-surface-container-high p-6 shadow-[0px_24px_48px_-12px_rgba(0,0,0,0.5)]">
+              <div>
+                <span className="mb-1 block text-xs font-bold uppercase tracking-widest text-primary">
+                  {ad.category.name} • {ad.is_featured ? 'Featured' : 'Standard'}
+                </span>
+                <h1 className="text-2xl font-black leading-tight text-on-surface">{ad.title}</h1>
+              </div>
+              <div className="flex items-center gap-2 text-on-surface-variant">
+                <MapPin className="h-4 w-4" />
+                <span className="text-sm font-medium">
+                  {ad.city.name}, {ad.city.state}
+                </span>
+              </div>
+              <div className="flex items-end justify-between border-y border-border/30 py-4">
+                <div>
+                  <span className="mb-1 block text-xs font-bold uppercase tracking-tighter text-on-surface-variant">
+                    Price
+                  </span>
+                  <span className="text-3xl font-black text-on-surface">${ad.price.toLocaleString()}</span>
+                </div>
+                <div className="text-right">
+                  <span className="mb-1 block text-xs text-on-surface-variant">Listing</span>
+                  <span className="text-sm font-bold text-muted-foreground">Live now</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-lg bg-muted/40 p-3 text-center">
+                  <Bed className="mx-auto mb-1 h-6 w-6 text-accent" />
+                  <span className="block text-xs text-on-surface-variant">Layout</span>
+                  <span className="block text-sm font-bold">Multi-room</span>
+                </div>
+                <div className="rounded-lg bg-muted/40 p-3 text-center">
+                  <Bath className="mx-auto mb-1 h-6 w-6 text-accent" />
+                  <span className="block text-xs text-on-surface-variant">Details</span>
+                  <span className="block text-sm font-bold">As listed</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="space-y-6 rounded-xl bg-surface-container p-6">
+              <div className="flex items-center gap-4">
+                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-primary/30 bg-muted text-lg font-bold text-primary">
+                  {ad.seller.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-lg font-bold text-on-surface">{ad.seller.name}</h3>
+                  <div className="mb-1 flex flex-wrap items-center gap-1 text-primary">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                    ))}
+                    <Star className="h-4 w-4 text-primary" />
+                    <span className="ml-1 text-xs font-bold text-on-surface-variant">4.8 (demo)</span>
                   </div>
+                  <span className="text-xs font-medium text-muted-foreground">Verified on AdFlow Pro</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Button className="flex h-12 w-full items-center justify-center gap-2 bg-primary font-bold text-primary-foreground hover:opacity-90">
+                  <Mail className="h-4 w-4" />
+                  Contact Seller
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex h-12 w-full items-center justify-center gap-2 border-border/50 bg-muted/30 font-bold text-on-surface hover:bg-muted/60"
+                >
+                  <Flag className="h-4 w-4" />
+                  Report Ad
+                </Button>
+              </div>
+              <div className="border-t border-border/30 pt-4 text-center">
+                <Link href="/explore" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary hover:underline">
+                  View All Listings
+                  <ChevronRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </section>
 
-                  {ad.seller.is_verified && (
-                    <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-xl p-4 mb-8 flex items-start gap-3">
-                      <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-500 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-sm font-bold text-green-800 dark:text-green-400">Verified Premium Seller</p>
-                        <p className="text-xs text-green-700/80 dark:text-green-500/80 font-medium mt-1 leading-relaxed">This seller has completed our strict identity and quality verification process. Deal with confidence.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="space-y-3">
-                    <Button className="w-full h-14 text-lg font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20 transition-all rounded-xl">
-                      Contact Seller
-                    </Button>
-                    <Button variant="outline" className="w-full h-14 text-base font-semibold border-indigo-200 text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-950/50 rounded-xl">
-                      Show Phone Number
-                    </Button>
+            <section className="relative h-48 overflow-hidden rounded-xl bg-surface-container">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/10" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative text-center">
+                  <div className="absolute -top-10 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded border border-primary/25 bg-background px-2 py-1 text-[10px] font-bold shadow-lg">
+                    Exact location hidden
                   </div>
-
-                  <div className="mt-8 pt-6 border-t border-border/50 text-center">
-                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 text-xs font-semibold px-4 h-8 rounded-full transition-colors">
-                      <Flag className="w-3 h-3 mr-1.5" /> Report this ad
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <MapPin className="mx-auto h-10 w-10 text-primary" />
+                </div>
+              </div>
+              <div className="absolute bottom-4 left-4 rounded-full border border-border/30 bg-background/80 px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur-md">
+                {ad.city.name}, {ad.city.state}
+              </div>
+            </section>
           </div>
         </div>
-      </div>
+      </main>
+      <SiteFooter />
     </div>
   )
 }

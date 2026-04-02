@@ -1,5 +1,10 @@
+'use client'
+
 import Link from 'next/link'
-import { Bell, CircleUserRound } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { Bell, Search } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Input } from '@/components/ui/input'
 
 const navItems = [
   { label: 'Marketplace', href: '/explore' },
@@ -8,35 +13,61 @@ const navItems = [
 ]
 
 export function MainNav() {
+  const pathname = usePathname()
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-[#161f37]/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[72px] w-full max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-10">
+    <header className="af-glass-header fixed top-0 z-50 w-full border-b border-white/5">
+      <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center justify-between px-4 sm:px-8">
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-2xl font-extrabold tracking-tight text-white">
+          <Link href="/" className="text-xl font-bold tracking-tight text-on-surface">
             AdFlow Pro
           </Link>
-          <nav className="hidden items-center gap-7 text-sm font-medium text-slate-300 md:flex">
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="transition hover:text-white">
-                {item.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-6 md:flex">
+            {navItems.map((item) => {
+              const active =
+                item.href === '/explore'
+                  ? pathname === '/explore' || pathname.startsWith('/ad/')
+                  : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'pb-1 text-sm font-medium transition-colors',
+                    active
+                      ? 'border-b-2 border-primary font-semibold text-primary'
+                      : 'border-b-2 border-transparent text-on-surface-variant hover:text-on-surface'
+                  )}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="relative hidden max-w-xs lg:block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search marketplace..."
+              className="h-9 rounded-full border-0 bg-[hsl(var(--input))] pl-10 pr-4 text-sm text-on-surface placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary"
+            />
+          </div>
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/5 bg-white/5 text-slate-200 transition hover:bg-white/10"
+            className="grid h-10 w-10 place-items-center rounded-full text-on-surface-variant transition-colors hover:bg-muted/60"
             aria-label="Notifications"
           >
-            <Bell className="h-4 w-4" />
+            <Bell className="h-5 w-5" />
           </button>
           <Link
             href="/dashboard"
-            className="grid h-10 w-10 place-items-center rounded-full border border-cyan-400/40 bg-gradient-to-br from-[#26314f] to-[#1b2442] text-slate-100 shadow-[0_0_0_3px_rgba(21,153,236,0.1)]"
+            className="h-9 w-9 overflow-hidden rounded-full border border-border/50 ring-2 ring-primary/20 transition hover:ring-primary/40"
           >
-            <CircleUserRound className="h-5 w-5" />
+            <span className="flex h-full w-full items-center justify-center bg-surface-container-high text-xs font-bold text-primary">
+              AF
+            </span>
           </Link>
         </div>
       </div>
