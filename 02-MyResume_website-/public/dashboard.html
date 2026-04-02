@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --dark-bg: #0f0f23;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            min-height: calc(100vh - 76px);
+            position: sticky;
+            top: 76px;
+        }
+
+        .sidebar .list-group-item {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.25rem;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar .list-group-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary-gradient);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .list-group-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+            transform: translateX(5px);
+        }
+
+        .sidebar .list-group-item.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidebar .list-group-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar .list-group-item i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            background: var(--dark-bg);
+            min-height: calc(100vh - 76px);
+        }
+
+        .stats-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-modern {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-control-modern {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control-modern:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            color: #e2e8f0;
+        }
+
+        .form-control-modern::placeholder {
+            color: #64748b;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .table {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table tbody td {
+            border-color: var(--border-color);
+            padding: 1rem;
+            color: #e2e8f0;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .project-card, .skill-card, .blog-card, .message-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover, .skill-card:hover, .blog-card:hover, .message-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .skill-progress {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .notification.success { background: var(--success-gradient); }
+        .notification.error { background: var(--secondary-gradient); }
+        .notification.info { background: var(--primary-gradient); }
+    </style>
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">Admin Panel</a>
+            <div class="d-flex align-items-center gap-3">
+                <span id="admin-email" class="text-light small"></span>
+                <button onclick="logout()" class="btn btn-outline-light btn-sm">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="list-group shadow-sm" id="dashboard-tabs" role="tablist">
+                    <button class="list-group-item list-group-item-action active" data-bs-toggle="pill"
+                        data-bs-target="#tab-overview" type="button">
+                        <i class="bi bi-speedometer2"></i> Overview
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-projects" type="button">
+                        <i class="bi bi-briefcase"></i> Projects
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-skills" type="button">
+                        <i class="bi bi-graph-up"></i> Skills
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-blogs" type="button">
+                        <i class="bi bi-pencil-square"></i> Blogs
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-messages" type="button">
+                        <i class="bi bi-envelope"></i> Messages
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-users" type="button">
+                        <i class="bi bi-people"></i> Users
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-content-manager" type="button">
+                        <i class="bi bi-gear"></i> Content Manager
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-bs-toggle="pill"
+                        data-bs-target="#tab-live-editor" type="button">
+                        <i class="bi bi-pencil"></i> Live Editor
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <div class="tab-content p-4" id="pills-tabContent">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="mb-0">Dashboard Overview</h2>
+                            <small class="text-muted">Welcome back, Admin</small>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3 mb-3">
+                                <div class="stats-card fade-in">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="text-muted mb-1">Total Projects</h6>
+                                            <div class="stats-number" id="stats-projects">0</div>
+                                        </div>
+                                        <div class="text-primary">
+                                            <i class="bi bi-briefcase-fill" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stats-card fade-in">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="text-muted mb-1">Skills Count</h6>
+                                            <div class="stats-number" id="stats-skills">0</div>
+                                        </div>
+                                        <div class="text-success">
+                                            <i class="bi bi-graph-up" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stats-card fade-in">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="text-muted mb-1">Blog Posts</h6>
+                                            <div class="stats-number" id="stats-blogs">0</div>
+                                        </div>
+                                        <div class="text-warning">
+                                            <i class="bi bi-pencil-square" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="stats-card fade-in">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h6 class="text-muted mb-1">Messages</h6>
+                                            <div class="stats-number" id="stats-messages">0</div>
+                                        </div>
+                                        <div class="text-info">
+                                            <i class="bi bi-envelope-fill" style="font-size: 2rem;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="content-card">
+                            <h5 class="mb-3">Quick Actions</h5>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-modern w-100" data-bs-toggle="pill" data-bs-target="#tab-projects">
+                                        <i class="bi bi-plus-circle me-2"></i>Add Project
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-modern w-100" data-bs-toggle="pill" data-bs-target="#tab-skills">
+                                        <i class="bi bi-plus-circle me-2"></i>Add Skill
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-modern w-100" data-bs-toggle="pill" data-bs-target="#tab-blogs">
+                                        <i class="bi bi-plus-circle me-2"></i>Create Blog
+                                    </button>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <button class="btn btn-modern w-100" data-bs-toggle="pill" data-bs-target="#tab-mail">
+                                        <i class="bi bi-send me-2"></i>Send Mail
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects Tab -->
+                    <div class="tab-pane fade" id="tab-projects" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-briefcase me-2"></i>Projects Management</h3>
+                            <button class="btn btn-modern" data-bs-toggle="modal" data-bs-target="#projectModal"
+                                onclick="clearProjectForm()">
+                                <i class="bi bi-plus-circle me-2"></i>Add Project
+                            </button>
+                        </div>
+                        <div id="admin-projects-list" class="row"></div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div class="tab-pane fade" id="tab-skills" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-graph-up me-2"></i>Skills Management</h3>
+                            <button class="btn btn-modern" data-bs-toggle="modal" data-bs-target="#skillModal">
+                                <i class="bi bi-plus-circle me-2"></i>Add Skill
+                            </button>
+                        </div>
+                        <div id="admin-skills-list" class="row"></div>
+                    </div>
+
+                    <!-- Blogs Tab -->
+                    <div class="tab-pane fade" id="tab-blogs" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-pencil-square me-2"></i>Blog Management</h3>
+                            <button class="btn btn-modern" data-bs-toggle="modal" data-bs-target="#blogModal"
+                                onclick="clearBlogForm()">
+                                <i class="bi bi-plus-circle me-2"></i>Create Post
+                            </button>
+                        </div>
+                        <div id="admin-blogs-list"></div>
+                    </div>
+
+                    <!-- Messages Tab -->
+                    <div class="tab-pane fade" id="tab-messages" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-envelope me-2"></i>Contact Messages</h3>
+                            <button class="btn btn-outline-light btn-sm" onclick="loadAdminMessages()">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                            </button>
+                        </div>
+                        <div id="admin-messages-list"></div>
+                    </div>
+
+                    <!-- Users Tab -->
+                    <div class="tab-pane fade" id="tab-users" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-people me-2"></i>Registered Users</h3>
+                            <button class="btn btn-outline-light btn-sm" onclick="loadAdminUsers()">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                            </button>
+                        </div>
+                        <div id="admin-users-list"></div>
+                    </div>
+
+                    <!-- Mail Panel Tab -->
+                    <div class="tab-pane fade" id="tab-mail" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="bi bi-send me-2"></i>Mail Panel</h3>
+                            <button class="btn btn-outline-light btn-sm" onclick="loadContacts()">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Refresh Contacts
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="content-card">
+                                    <h5 class="mb-3">Contact List</h5>
+                                    <div id="mail-contacts-list" style="max-height: 400px; overflow-y: auto;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="content-card">
+                                    <h5 class="mb-3">Compose Email</h5>
+                                    <form id="mail-form">
+                                        <div class="mb-3">
+                                            <label class="form-label">To (leave blank to broadcast)</label>
+                                            <input type="email" class="form-control form-control-modern" name="to" id="mail-to">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Subject</label>
+                                            <input type="text" class="form-control form-control-modern" name="subject" id="mail-subject" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Body (HTML allowed)</label>
+                                            <textarea class="form-control form-control-modern" name="body" id="mail-body" rows="6" required></textarea>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="mail-broadcast" name="broadcast">
+                                            <label class="form-check-label" for="mail-broadcast">
+                                                Broadcast to all contacts
+                                            </label>
+                                        </div>
+                                        <button type="submit" class="btn btn-modern w-100">
+                                            <i class="bi bi-send me-2"></i>Send Email
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Manager Tab -->
+    <div class="tab-pane fade" id="tab-content-manager" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3><i class="bi bi-gear me-2"></i>Content Management System</h3>
+            <button class="btn btn-modern" onclick="refreshAllContent()">
+                <i class="bi bi-arrow-clockwise me-1"></i>Refresh All
+            </button>
+        </div>
+
+        <!-- Content Type Selector -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="content-card">
+                    <h5 class="mb-3">Select Content Type</h5>
+                    <div class="row">
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="selectContentType('projects')">
+                                <i class="bi bi-briefcase me-1"></i>Projects
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-success w-100" onclick="selectContentType('skills')">
+                                <i class="bi bi-graph-up me-1"></i>Skills
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-info w-100" onclick="selectContentType('api-blogs')">
+                                <i class="bi bi-api me-1"></i>API Blogs
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-warning w-100" onclick="selectContentType('messages')">
+                                <i class="bi bi-envelope me-1"></i>Messages
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-danger w-100" onclick="selectContentType('users')">
+                                <i class="bi bi-people me-1"></i>Users
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-outline-secondary w-100" onclick="selectContentType('contacts')">
+                                <i class="bi bi-person-lines-fill me-1"></i>Contacts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Management Interface -->
+        <div id="content-manager-interface">
+            <div class="content-card">
+                <div class="text-center py-5">
+                    <i class="bi bi-arrow-up-circle text-muted" style="font-size: 3rem;"></i>
+                    <h5 class="text-muted mt-3">Select a content type above to manage</h5>
+                    <p class="text-muted">Choose from Projects, Skills, API Blogs, Messages, Users, or Contacts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Editor Tab -->
+    <div class="tab-pane fade" id="tab-live-editor" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3><i class="bi bi-pencil me-2"></i>Live Page Editor</h3>
+            <div class="d-flex gap-2">
+                <select id="page-selector" class="form-select form-control-modern" style="width: 200px;">
+                    <option value="">Select Page</option>
+                    <option value="index">Home Page</option>
+                    <option value="projects">Projects Page</option>
+                    <option value="skills">Skills Page</option>
+                    <option value="blog">Blog Page</option>
+                    <option value="contact">Contact Page</option>
+                </select>
+                <button class="btn btn-modern" onclick="loadPageForEditing()">
+                    <i class="bi bi-eye me-1"></i>Load Page
+                </button>
+            </div>
+        </div>
+
+        <div id="live-editor-interface">
+            <div class="content-card">
+                <div class="text-center py-5">
+                    <i class="bi bi-file-earmark-text text-muted" style="font-size: 3rem;"></i>
+                    <h5 class="text-muted mt-3">Select a page to edit live</h5>
+                    <p class="text-muted">Make real-time changes to your website pages</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Editor Tools -->
+        <div id="editor-tools" class="d-none">
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="content-card">
+                        <h5 class="mb-3">Editor Tools</h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-primary w-100 mb-2" onclick="enableEditMode()">
+                                    <i class="bi bi-pencil-square me-1"></i>Edit Mode
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-success w-100 mb-2" onclick="savePageChanges()">
+                                    <i class="bi bi-check-circle me-1"></i>Save Changes
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-warning w-100 mb-2" onclick="previewChanges()">
+                                    <i class="bi bi-eye me-1"></i>Preview
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-danger w-100 mb-2" onclick="discardChanges()">
+                                    <i class="bi bi-x-circle me-1"></i>Discard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals (Project, Skill, Blog, Reply) -->
+    <!-- ... [Content same as previous implementation but ensured it's written] ... -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="project-form">
+                    <div class="modal-header">
+                        <h5>Project Details</h5><button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="project-id">
+                        <div class="mb-3"><label class="form-label">Title</label><input type="text" class="form-control"
+                                name="title" id="p-title" required></div>
+                        <div class="mb-3"><label class="form-label">Description</label>
+                            <div class="input-group">
+                                <textarea class="form-control" name="description" id="p-description" rows="3"
+                                    required></textarea>
+                                <button type="button" onclick="aiGenerateDescription()" class="btn btn-outline-info"><i
+                                        class="bi bi-robot"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3"><label class="form-label">AI Context (Keywords)</label><input type="text"
+                                class="form-control" id="p-ai-details"></div>
+                        <div class="mb-3"><label class="form-label">Image URL</label><input type="text"
+                                class="form-control" name="image" id="p-image"></div>
+                        <div class="mb-3"><label class="form-label">Project Link</label><input type="text"
+                                class="form-control" name="link" id="p-link"></div>
+                    </div>
+                    <div class="modal-footer"><button type="submit" class="btn btn-primary">Save Project</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="skillModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="skill-form">
+                    <div class="modal-header">
+                        <h5>Skill Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3"><label class="form-label">Name</label><input type="text" class="form-control"
+                                name="name" required></div>
+                        <div class="mb-3"><label class="form-label">Level (%)</label><input type="number"
+                                class="form-control" name="level" min="1" max="100" required></div>
+                        <div class="mb-3"><label class="form-label">Category</label><input type="text"
+                                class="form-control" name="category"></div>
+                    </div>
+                    <div class="modal-footer"><button type="submit" class="btn btn-primary">Add Skill</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="blogModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="blog-form">
+                    <div class="modal-header">
+                        <h5>Blog Post</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="blog-id">
+                        <div class="mb-3"><label class="form-label">Title</label><input type="text" class="form-control"
+                                name="title" id="b-title" required></div>
+                        <div class="mb-3"><label class="form-label">Content</label>
+                            <textarea class="form-control" name="content" id="b-content" rows="10" required></textarea>
+                            <div class="mt-2 d-flex gap-2">
+                                <input type="text" class="form-control form-control-sm" id="b-ai-topic"
+                                    placeholder="AI Topic">
+                                <button type="button" onclick="aiGenerateBlog()" class="btn btn-info btn-sm"><i
+                                        class="bi bi-robot"></i> AI Post</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer"><button type="submit" class="btn btn-primary">Save Blog</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="replyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>AI Reply Suggestion</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="ai-reply-content" class="bg-light p-3 border rounded" style="white-space: pre-wrap;"></pre>
+                </div>
+                <div class="modal-footer"><button class="btn btn-sm btn-outline-primary"
+                        onclick="copyReply()">Copy</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
