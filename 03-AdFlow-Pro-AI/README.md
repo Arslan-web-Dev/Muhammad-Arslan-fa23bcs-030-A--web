@@ -2,9 +2,9 @@
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Sponsored listing marketplace: sellers post and boost ads, buyers browse and contact sellers, moderators review submissions, and admins verify payments and view analytics. Built with **Next.js 14 (App Router)**, **Supabase**, **TanStack Query**, and **Tailwind CSS**.
+> Full-stack **sponsored listing marketplace**: public browse and detail pages, seller dashboards, moderation and admin tools, with **Supabase** auth and **Next.js 14** (App Router), **TanStack Query**, and **Tailwind CSS**.
 
 ---
 
@@ -12,96 +12,138 @@ Sponsored listing marketplace: sellers post and boost ads, buyers browse and con
 
 | | |
 |--|--|
-| 1 | [Overview](#overview) |
-| 2 | [Features](#features) |
-| 3 | [UI and design system](#ui-and-design-system) |
-| 4 | [Technology stack](#technology-stack) |
-| 5 | [Architecture](#architecture) |
-| 6 | [Repository layout](#repository-layout) |
-| 7 | [Routes](#routes) |
-| 8 | [Authentication and RBAC](#authentication-and-rbac) |
-| 9 | [Core systems](#core-systems) |
-| 10 | [Database schema](#database-schema) |
-| 11 | [Environment variables](#environment-variables) |
-| 12 | [Getting started](#getting-started) |
-| 13 | [Scripts](#scripts) |
-| 14 | [Important files](#important-files) |
-| 15 | [Roadmap](#roadmap) |
-| 16 | [License](#license) |
+| 1 | [Key features](#key-features) |
+| 2 | [Screenshots](#screenshots) |
+| 3 | [Project summary](#project-summary) |
+| 4 | [UI and design system](#ui-and-design-system) |
+| 5 | [Technology stack](#technology-stack) |
+| 6 | [Architecture](#architecture) |
+| 7 | [Repository layout](#repository-layout) |
+| 8 | [Routes](#routes) |
+| 9 | [Authentication and RBAC](#authentication-and-rbac) |
+| 10 | [Core systems](#core-systems) |
+| 11 | [Database schema](#database-schema) |
+| 12 | [Environment variables](#environment-variables) |
+| 13 | [Getting started](#getting-started) |
+| 14 | [Scripts](#scripts) |
+| 15 | [Important files](#important-files) |
+| 16 | [Roadmap](#roadmap) |
+| 17 | [Contributing](#contributing) |
+| 18 | [License](#license) |
+| 19 | [Author](#author) |
 
 ---
 
-## Overview
+## Key features
 
-AdFlow Pro is a full-stack SaaS-style web application for classified and sponsored listings. Public visitors see a marketing landing page, marketplace browse, and ad detail views. Authenticated users get role-specific dashboards (`client`, `moderator`, `admin`, `super_admin`). Session handling and route protection are implemented in `middleware.ts` with Supabase.
+- **Dark marketplace UI** — Material-style tokens, glass header, gradients, **Inter** typography.
+- **Public experience** — Landing (hero, featured listings, pricing), **Explore** with filter sidebar, **ad detail** (gallery, seller card, location strip).
+- **Seller dashboard** — KPIs, campaigns table, activity feed, create-ad and payments flows (UI ready; hook to Supabase for live data).
+- **Moderation and admin** — Queues, payment verification, analytics (Recharts) for elevated roles.
+- **Route security** — `middleware.ts` applies authentication and **RBAC** per route prefix.
+- **Ranking** — `lib/ranking-system.ts` combines featured flag, package weight, verification, freshness, and optional admin boost.
 
 ---
 
-## Features
+## Screenshots
 
-| Area | Description |
-|------|-------------|
-| Marketplace | Landing page with hero, featured listings, and pricing tiers |
-| Explore | Browse listings with filters (category, location, price UI) |
-| Ad detail | Gallery, description, seller card, and contact actions |
-| Post ad | Seller flow to create listings (dashboard) |
-| Packages | Tiered visibility tied to ranking logic |
-| Dashboard | Seller KPIs, campaigns table, activity feed |
-| Moderation | Queue for approve / reject workflows |
-| Admin | Payments verification, analytics, user management (elevated roles) |
+Add images under [`docs/screenshots/`](docs/screenshots/) using these names (PNG or JPG). After you commit them, they appear below on GitHub.
+
+| File | Suggested capture |
+|------|-------------------|
+| `landing.png` | Home — hero, CTAs, featured strip |
+| `explore.png` | Explore — filters + listing cards |
+| `ad-detail.png` | Single ad — media + seller panel |
+| `dashboard.png` | Seller dashboard |
+| `admin.png` | Admin or moderator screen (optional) |
+
+### Landing
+
+![Landing page](docs/screenshots/landing.png)
+
+### Explore
+
+![Explore marketplace](docs/screenshots/explore.png)
+
+### Ad detail
+
+![Listing detail](docs/screenshots/ad-detail.png)
+
+### Dashboard
+
+![Seller dashboard](docs/screenshots/dashboard.png)
+
+### Admin / moderation (optional)
+
+![Admin or moderator](docs/screenshots/admin.png)
+
+---
+
+## Project summary
+
+Unauthenticated users can use the marketing site, browse listings, and open ad details. After sign-in, users access `/dashboard`; moderators and admins additionally use `/moderator` and `/admin`. Session cookies and role checks are handled by Supabase and `middleware.ts`.
 
 ---
 
 ## UI and design system
 
-The product UI uses a **dark, Material-inspired** palette: deep navy surfaces, indigo primary (`#4f46e5`), cyan accent, and high-contrast text on surfaces.
+Dark, **Material-inspired** palette: deep navy surfaces, indigo primary (`#4f46e5`), cyan accent, high-contrast text.
 
-| Concern | Location |
-|---------|----------|
-| Design tokens (CSS variables) | `app/globals.css` — `--background`, `--card`, `--primary`, etc.; utilities such as `.af-glass-header`, `.af-gradient`, `.af-hero-gradient` |
-| Tailwind aliases | `tailwind.config.ts` — `surface`, `surface-container`, `surface-container-low`, `on-surface`, `on-surface-variant` |
-| Typography | [Inter](https://fonts.google.com/specimen/Inter) via `next/font/google` in `app/layout.tsx` |
-| Public navigation and footer | `components/layouts/main-nav.tsx`, `components/layouts/site-footer.tsx` |
-| Authenticated shell | `components/layouts/dashboard-shell.tsx`, `components/layouts/dashboard-sidebar.tsx` |
+| Topic | Where |
+|-------|--------|
+| CSS variables and utilities | `app/globals.css` (`--background`, `--card`, `--primary`, `.af-glass-header`, `.af-gradient`, …) |
+| Tailwind semantic colors | `tailwind.config.ts` — `surface`, `surface-container`, `on-surface`, … |
+| Font | [Inter](https://fonts.google.com/specimen/Inter) in `app/layout.tsx` |
+| Public chrome | `components/layouts/main-nav.tsx`, `site-footer.tsx` |
+| App shell | `dashboard-shell.tsx`, `dashboard-sidebar.tsx` |
 
 ---
 
 ## Technology stack
 
+### Frontend
+
 | Layer | Technology |
 |-------|------------|
 | Framework | Next.js 14 (App Router), React 18 |
 | Language | TypeScript 5 |
-| Backend / Auth | Supabase (PostgreSQL, Auth, SSR cookies) |
+| Styling | Tailwind CSS v3, project tokens |
+| Components | shadcn/ui-style + Base UI |
+| Icons | Lucide React |
+| Animations | `tailwindcss-animate`, `tw-animate-css` |
+| Toasts | Sonner |
+
+### Backend and data
+
+| Layer | Technology |
+|-------|------------|
+| Database / BaaS | Supabase (PostgreSQL) |
+| Auth | Supabase Auth + `@supabase/ssr` |
 | Data fetching | TanStack Query v5 |
 | Client state | Zustand |
-| Styling | Tailwind CSS v3, custom tokens |
-| Components | shadcn/ui patterns, Base UI primitives |
-| Icons | Lucide React |
 | Validation | Zod |
-| Charts | Recharts (admin analytics) |
-| Toasts | Sonner |
+| Charts | Recharts |
+| Optional AI | OpenAI via `/api/ai/*` |
 
 ---
 
 ## Architecture
 
 ```
-Client
+Browser
    │
    ▼
-middleware.ts  ── Session refresh, auth, RBAC (route prefixes)
+middleware.ts     Session refresh, auth, RBAC by path
    │
    ▼
-Next.js App Router (Server + Client Components)
-   │
-   ├── Public: /, /explore, /ad/[slug], /auth/*
-   ├── Protected: /dashboard/*  (client+)
-   ├── Protected: /moderator/* (moderator+)
-   └── Protected: /admin/*      (admin / super_admin)
+Next.js App Router
+   ├── Public:  /, /explore, /ad/[slug], /auth/*
+   ├── /dashboard/*     (client+)
+   ├── /moderator/*     (moderator+)
+   └── /admin/*         (admin, super_admin)
    │
    ▼
-Supabase ── PostgreSQL (users, ads, categories, cities, packages, payments)
+Supabase (PostgreSQL: users, ads, categories, cities, packages, payments)
 ```
 
 ---
@@ -110,26 +152,10 @@ Supabase ── PostgreSQL (users, ads, categories, cities, packages, payments)
 
 ```
 03-AdFlow-Pro-AI/
-├── app/
-│   ├── layout.tsx              Root: fonts, providers, toaster
-│   ├── globals.css             Design tokens and global utilities
-│   ├── page.tsx                Landing
-│   ├── explore/page.tsx        Marketplace grid + filters
-│   ├── ad/[slug]/page.tsx      Listing detail
-│   ├── auth/                   Login, register, callback
-│   ├── dashboard/              Seller area
-│   ├── moderator/              Review workflows
-│   ├── admin/                  Admin tools
-│   └── api/                    AI helpers, cron endpoints
-├── components/
-│   ├── layouts/                main-nav, site-footer, dashboard-shell, dashboard-sidebar
-│   ├── providers/              auth, theme, query
-│   └── ui/                     shadcn-style primitives
-├── lib/
-│   ├── supabase/               browser + server clients
-│   ├── dummy-data.ts           Demo seed data
-│   ├── ranking-system.ts       Listing rank score
-│   └── utils.ts
+├── docs/screenshots/       # README images (landing.png, …)
+├── app/                    # Routes, layouts, API routes
+├── components/             # layouts/, providers/, ui/
+├── lib/                    # supabase/, dummy-data, ranking-system, utils
 ├── middleware.ts
 ├── next.config.mjs
 ├── tailwind.config.ts
@@ -142,72 +168,69 @@ Supabase ── PostgreSQL (users, ads, categories, cities, packages, payments)
 
 ### Public
 
-| Path | Purpose |
-|------|---------|
+| Path | Description |
+|------|-------------|
 | `/` | Marketing and pricing |
 | `/explore` | Browse listings |
-| `/ad/[slug]` | Single listing |
-| `/auth/login`, `/auth/register`, `/auth/callback` | Authentication |
+| `/ad/[slug]` | Listing detail |
+| `/auth/*` | Login, register, OAuth callback |
 
-### Authenticated (examples)
+### Authenticated (representative)
 
-| Path | Role |
-|------|------|
-| `/dashboard`, `/dashboard/ads`, `/dashboard/create`, … | `client` and above |
-| `/moderator`, `/moderator/queue` | `moderator` and above |
-| `/admin`, `/admin/payments`, `/admin/analytics`, … | `admin` / `super_admin` |
+| Prefix | Minimum role |
+|--------|----------------|
+| `/dashboard` | `client` |
+| `/moderator` | `moderator` |
+| `/admin` | `admin` or `super_admin` |
 
-### API (examples)
+### API (representative)
 
 | Prefix | Purpose |
 |--------|---------|
-| `/api/ai/*` | Optional AI-assisted copy |
-| `/api/cron/*` | Scheduled maintenance (expiry, ranking) |
+| `/api/ai/*` | Optional AI helpers |
+| `/api/cron/*` | Scheduled jobs (e.g. expiry) |
 
 ---
 
 ## Authentication and RBAC
 
-- **Supabase Auth** issues sessions; **`@supabase/ssr`** syncs cookies on server and client.
-- **`middleware.ts`** refreshes the session, resolves the user, loads `role` from `public.users`, and redirects when a route requires a higher role than the current user.
-- **`DashboardSidebar`** (`components/layouts/dashboard-sidebar.tsx`) shows navigation based on the active route prefix (`/admin` vs `/dashboard` vs `/moderator`) so admins and clients see appropriate items.
+1. **Supabase Auth** creates the session; **`@supabase/ssr`** reads/writes cookies on server and client.
+2. **`middleware.ts`** refreshes the session, loads the user, reads `role` from `public.users`, and redirects if the role is insufficient for the path.
+3. **`DashboardSidebar`** adjusts visible links based on whether you are under `/admin`, `/moderator`, or `/dashboard`.
 
-Simplified guard pattern:
+Illustrative logic (see `middleware.ts` for the real code):
 
 ```typescript
-// Illustrative — see middleware.ts for the real implementation
 if (!user && isProtectedPath(pathname)) redirect('/auth/login')
 if (pathname.startsWith('/admin') && !isAdminRole(role)) redirect('/dashboard')
 ```
 
-Role order (highest capability first): `super_admin` → `admin` → `moderator` → `client`.
+Role capability (high → low): `super_admin`, `admin`, `moderator`, `client`.
 
 ---
 
 ## Core systems
 
-### Listing rank score
+### Listing rank
 
-**File:** `lib/ranking-system.ts`
-
-Score combines featured flag, package weight, verified seller bonus, optional admin boost, and freshness decay. Higher score appears earlier in browse results when wired to real data.
+**File:** `lib/ranking-system.ts` — combines featured status, package weight, seller verification, admin boost, and time-based freshness. Higher scores sort earlier when the browse API uses this field.
 
 ### Supabase clients
 
-| File | Use |
-|------|-----|
-| `lib/supabase/client.ts` | Client Components (`'use client'`), browser-only APIs |
-| `lib/supabase/server.ts` | Server Components, route handlers, `middleware.ts` |
+| File | Context |
+|------|---------|
+| `lib/supabase/client.ts` | Client Components |
+| `lib/supabase/server.ts` | Server Components, Route Handlers, `middleware.ts` |
 
-### UI components
+### UI kit
 
-Reusable primitives live under `components/ui/` (buttons, cards, dialogs, tables, etc.), styled with the same tokens as the rest of the app.
+Shared primitives live in `components/ui/` and follow the same design tokens as the rest of the app.
 
 ---
 
 ## Database schema
 
-Create the following (or equivalent) in Supabase SQL. Adjust types and RLS to your security model.
+Run in the Supabase SQL editor (adjust naming and add **RLS** for production):
 
 ```sql
 CREATE TABLE public.users (
@@ -276,7 +299,7 @@ CREATE TABLE public.payments (
 
 ## Environment variables
 
-Create `.env.local` in the project root (never commit secrets):
+Root file: **`.env.local`** (do not commit).
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
@@ -287,27 +310,27 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
 # CRON_SECRET=
 ```
 
-Only variables prefixed with `NEXT_PUBLIC_` are exposed to the browser.
+Only `NEXT_PUBLIC_*` keys are available in the browser.
 
 ---
 
 ## Getting started
 
-**Requirements:** Node.js 18.17+, npm 9+ (or pnpm / yarn), a Supabase project.
+**Prerequisites:** Node.js ≥ 18.17, npm ≥ 9 (or pnpm/yarn), a Supabase project.
 
 ```bash
-git clone <your-repo-url>
+git clone <your-repository-url>
 cd 03-AdFlow-Pro-AI
 npm install
 ```
 
-Copy environment template if present, or create `.env.local` as above. Apply the SQL schema in the Supabase SQL editor, then seed categories and cities as needed (or rely on `lib/dummy-data.ts` for local UI).
+Create `.env.local` as above, run the SQL schema in Supabase, seed data if needed (or use `lib/dummy-data.ts` for local UI only).
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Application: [http://localhost:3000](http://localhost:3000).
 
 ---
 
@@ -315,46 +338,50 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Development server with hot reload |
-| `npm run build` | Production build (includes lint) |
-| `npm start` | Run production server after `build` |
+| `npm run dev` | Development server |
+| `npm run build` | Production build (runs lint) |
+| `npm start` | Serve production build |
 | `npm run lint` | ESLint |
 
 ---
 
 ## Important files
 
-| File | Role |
-|------|------|
-| `middleware.ts` | Auth session + RBAC for protected routes |
-| `app/layout.tsx` | Root layout, Inter font, providers |
-| `app/globals.css` | CSS variables and global UI utilities |
-| `lib/ranking-system.ts` | Ranking helper for listings |
-| `lib/supabase/client.ts` / `server.ts` | Supabase for client vs server |
-| `components/layouts/dashboard-sidebar.tsx` | Role-aware sidebar + mobile drawer |
+| Path | Purpose |
+|------|---------|
+| `middleware.ts` | Auth + RBAC |
+| `app/layout.tsx` | Root layout and providers |
+| `app/globals.css` | Design tokens |
+| `lib/ranking-system.ts` | Listing score |
+| `lib/supabase/client.ts`, `server.ts` | Supabase entry points |
+| `components/layouts/dashboard-sidebar.tsx` | Nav + mobile drawer |
 
 ---
 
 ## Roadmap
 
-- [ ] Replace remaining dummy data with Supabase queries
-- [ ] End-to-end explore filters (category, city, price)
-- [ ] Image upload and media pipeline for new ads
-- [ ] Moderator approve/reject persistence
-- [ ] Admin payment verification workflow
-- [ ] RLS policies on all tables
-- [ ] Production deployment (e.g. Vercel) with env configuration
+- [ ] Wire UI to live Supabase data
+- [ ] Working explore filters (category, city, price)
+- [ ] Media upload for new listings
+- [ ] Persist moderator actions
+- [ ] Admin payment review flow
+- [ ] Row Level Security on all tables
+- [ ] Deploy (e.g. Vercel) with env vars
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome on your fork. For course submissions, follow your instructor’s collaboration rules.
 
 ---
 
 ## License
 
-MIT. Add a `LICENSE` file in the repo root if you need a formal copy for submission or open source distribution.
+MIT. Add a root `LICENSE` file if your institution or publication requires it.
 
 ---
 
 ## Author
 
-**Muhammad Arslan** — FA23-BCS-030 · Web technologies / AdFlow Pro coursework repository.
-
-For issues and contributions, use GitHub Issues and Pull Requests against your fork.
+**Muhammad Arslan** — FA23-BCS-030 · Web technologies — AdFlow Pro (coursework).
