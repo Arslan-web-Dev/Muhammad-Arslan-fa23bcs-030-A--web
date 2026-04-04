@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { ArrowRight, BadgeCheck, Rocket, Sparkles } from 'lucide-react'
 import { MainNav } from '@/components/layouts/main-nav'
 import { SiteFooter } from '@/components/layouts/site-footer'
+import { LandingAccentBar } from '@/components/theme/landing-accent-bar'
+import { MeetTheCreator } from '@/components/dashboard/meet-the-creator'
 import { Button } from '@/components/ui/button'
 import { DUMMY_ADS } from '@/lib/dummy-data'
 
@@ -65,9 +67,13 @@ const packages = [
 
 export default function Home() {
   return (
-    <div className="af-shell flex min-h-screen flex-col">
+    <div className="af-shell flex min-h-screen">
       <MainNav />
-      <main className="flex-1 pt-16">
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="pt-14 md:pt-0">
+          <LandingAccentBar />
+        </div>
+        <main className="flex-1">
         <section className="af-hero-gradient relative flex min-h-[560px] items-center justify-center overflow-hidden px-4 pb-20 pt-12 sm:px-6 lg:min-h-[640px] lg:px-10 lg:pb-28 lg:pt-16">
           <div className="pointer-events-none absolute inset-0 -z-0 opacity-30">
             <div className="absolute left-1/4 top-0 h-96 w-96 rounded-full bg-primary/40 blur-[128px]" />
@@ -210,6 +216,16 @@ export default function Home() {
           </div>
         </section>
 
+        <section
+          id="creator"
+          aria-labelledby="meet-creator-heading"
+          className="border-t border-border/30 bg-background/40 px-4 py-16 sm:px-6 sm:py-20 lg:px-10"
+        >
+          <div className="mx-auto max-w-7xl">
+            <MeetTheCreator />
+          </div>
+        </section>
+
         <section className="px-4 pb-20 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-accent p-12 text-center shadow-2xl md:p-16">
             <div className="relative z-10">
@@ -231,9 +247,10 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <SiteFooter />
+        <SiteFooter />
+      </div>
     </div>
   )
 }

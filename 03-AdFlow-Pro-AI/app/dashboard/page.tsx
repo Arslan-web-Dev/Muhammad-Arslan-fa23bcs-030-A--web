@@ -1,4 +1,4 @@
-﻿import { MoreVertical, ArrowUpRight, CheckCircle2, Clock3, CalendarX2, Layers3 } from 'lucide-react'
+import { MoreVertical, ArrowUpRight, CheckCircle2, Clock3, CalendarX2, Layers3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const stats = [
