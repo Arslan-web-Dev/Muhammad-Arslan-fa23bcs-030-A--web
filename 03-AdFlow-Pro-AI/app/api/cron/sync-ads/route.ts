@@ -69,7 +69,7 @@ export async function GET(req: Request) {
         max_tokens: 100,
       })
       description = completion.choices[0]?.message?.content?.trim() || ''
-    } catch (e) {
+    } catch {
       // Fallback
       description = `Check out this amazing ${title}! High quality and great value in the ${category.name} category. Limited time offer, don't miss out!`
     }
@@ -98,7 +98,8 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ success: true, ...results })
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
   }
 }

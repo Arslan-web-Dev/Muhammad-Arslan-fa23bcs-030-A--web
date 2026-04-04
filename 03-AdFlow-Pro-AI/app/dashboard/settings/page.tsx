@@ -2,10 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { Separator } from '@/components/ui/separator'
-import { Bell, Moon, Globe, Lock, Trash2 } from 'lucide-react'
+import { Bell, Globe, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function SettingsPage() {

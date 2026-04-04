@@ -1,20 +1,20 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DUMMY_CATEGORIES, DUMMY_CITIES } from '@/lib/dummy-data'
+import { DUMMY_CATEGORIES } from '@/lib/dummy-data'
 import { CityPicker } from '@/components/ui/city-picker'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, Image as ImageIcon, Link as LinkIcon, Loader2, Sparkles, X } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function CreateAdPage() {
-  const [step, setStep] = useState(1)
+  const [step] = useState(1)
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [city, setCity] = useState('')

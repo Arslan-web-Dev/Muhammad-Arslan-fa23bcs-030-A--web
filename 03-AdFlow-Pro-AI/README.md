@@ -25,12 +25,13 @@
 | 11 | [Database schema](#database-schema) |
 | 12 | [Environment variables](#environment-variables) |
 | 13 | [Getting started](#getting-started) |
-| 14 | [Scripts](#scripts) |
-| 15 | [Important files](#important-files) |
-| 16 | [Roadmap](#roadmap) |
-| 17 | [Contributing](#contributing) |
-| 18 | [License](#license) |
-| 19 | [Author](#author) |
+| 14 | [Deploy (go live)](#deploy-go-live) |
+| 15 | [Scripts](#scripts) |
+| 16 | [Important files](#important-files) |
+| 17 | [Roadmap](#roadmap) |
+| 18 | [Contributing](#contributing) |
+| 19 | [License](#license) |
+| 20 | [Author](#author) |
 
 ---
 
@@ -47,15 +48,17 @@
 
 ## Screenshots
 
-Add images under [`docs/screenshots/`](docs/screenshots/) using these names (PNG or JPG). After you commit them, they appear below on GitHub.
+The repo includes **placeholder images** in [`docs/screenshots/`](docs/screenshots/) so the sections below **render on GitHub** immediately. Replace those PNGs with your own captures (same filenames) for a real portfolio look.
 
-| File | Suggested capture |
-|------|-------------------|
+| File | Replace with a capture of |
+|------|---------------------------|
 | `landing.png` | Home — hero, CTAs, featured strip |
 | `explore.png` | Explore — filters + listing cards |
 | `ad-detail.png` | Single ad — media + seller panel |
 | `dashboard.png` | Seller dashboard |
-| `admin.png` | Admin or moderator screen (optional) |
+| `admin.png` | Admin or moderator (optional) |
+
+**GitHub tip:** The main repo page only shows **`README.md` at the repository root**. If AdFlow Pro is inside a subfolder, open [`03-AdFlow-Pro-AI/README.md`](./README.md) from the file tree, or add a short intro in the root `README` that links here.
 
 ### Landing
 
@@ -331,6 +334,22 @@ npm run dev
 ```
 
 Application: [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Deploy (go live)
+
+Use your Vercel team dashboard, then import the GitHub repo and set **Root Directory** to `03-AdFlow-Pro-AI` if the repo is the parent monorepo.
+
+**Dashboard:** [vercel.com/muhammad-arslans-projects-6abbf6f8](https://vercel.com/muhammad-arslans-projects-6abbf6f8) (log in with GitHub if needed).
+
+1. Push the repo to GitHub.
+2. **Add New → Project** from that dashboard → import the repository.
+3. **Root Directory:** `03-AdFlow-Pro-AI` when the app is not at the repo root.
+4. **Environment variables:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+5. **Deploy** → use the `*.vercel.app` URL Vercel assigns.
+
+Full steps: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ---
 

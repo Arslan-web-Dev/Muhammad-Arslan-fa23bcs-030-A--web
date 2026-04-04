@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Check, Loader2, MapPin, Search } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
@@ -53,11 +52,16 @@ export function CityPicker({ value, onChange, placeholder = "Search city worldwi
         )
         const data = await response.json()
         
-        const cities = data.map((item: any) => ({
+        type NominatimItem = {
+          place_id: number
+          display_name: string
+          address: City['address']
+        }
+        const cities = (data as NominatimItem[]).map((item) => ({
           id: item.place_id.toString(),
           name: item.address.city || item.address.town || item.address.village || item.display_name.split(",")[0],
           display_name: item.display_name,
-          address: item.address
+          address: item.address,
         }))
         
         setResults(cities)

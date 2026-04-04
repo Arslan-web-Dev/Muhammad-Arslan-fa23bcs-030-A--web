@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Search, ShieldAlert, ShieldCheck } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -18,7 +17,8 @@ export default function UserManagementPage() {
   ]
 
   const handleRoleChange = (userId: string, newRole: string) => {
-    toast.success('User role updated successfully.')
+    toast.success(`User role updated to ${newRole}.`)
+    void userId
   }
 
   return (

@@ -5,10 +5,28 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+type BodyShape = {
+  title?: string
+  category?: string
+  price?: number | string
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message
+  return String(error)
+}
+
+function getErrorStatus(error: unknown): number | undefined {
+  if (error && typeof error === 'object' && 'status' in error && typeof (error as { status: unknown }).status === 'number') {
+    return (error as { status: number }).status
+  }
+  return undefined
+}
+
 export async function POST(req: Request) {
-  let body: any = {}
+  let body: BodyShape = {}
   try {
-    body = await req.json()
+    body = (await req.json()) as BodyShape
     const { title, category, price } = body
 
     if (!title) {
@@ -38,18 +56,18 @@ Write only the description text, nothing else.`
     }
 
     return NextResponse.json({ success: true, text })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('AI generation error:', error)
-    
-    // Check if it's a quota/rate limit error (429)
-    const isQuotaError = error?.status === 429 || error?.message?.includes('quota') || error?.message?.includes('429')
 
-    if (isQuotaError || error?.message?.includes('fetch') || process.env.NODE_ENV === 'development') {
+    const msg = getErrorMessage(error)
+    const status = getErrorStatus(error)
+    const isQuotaError = status === 429 || msg.includes('quota') || msg.includes('429')
+
+    if (isQuotaError || msg.includes('fetch') || process.env.NODE_ENV === 'development') {
       const { title, category } = body
-      
-      // Fallback descriptions based on category
+
       let fallbackText = `This premium ${category || 'item'} is now available. Featuring ${title}, it offers exceptional quality and value. Perfect for anyone looking for reliability and style. Don't miss out on this great opportunity—contact us today to learn more!`
-      
+
       if (category === 'Real Estate') {
         fallbackText = `Welcome to your new dream home! This stunning property features ${title} and is located in a highly sought-after area. With spacious rooms and modern finishes, it's perfect for families or investors. Schedule a viewing today to see this beautiful space in person!`
       } else if (category === 'Vehicles') {
@@ -58,17 +76,14 @@ Write only the description text, nothing else.`
         fallbackText = `Upgrade your tech with this ${title}. High-performance and in excellent condition, it's perfect for work, gaming, or entertainment. Sleek design meets powerful functionality. Get your hands on this premium device today at a competitive price!`
       }
 
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         text: fallbackText,
         isMock: true,
-        message: isQuotaError ? 'Using fallback (OpenAI quota exceeded)' : 'Using dev fallback'
+        message: isQuotaError ? 'Using fallback (OpenAI quota exceeded)' : 'Using dev fallback',
       })
     }
 
-    return NextResponse.json(
-      { success: false, error: error?.message || 'AI generation failed' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: msg || 'AI generation failed' }, { status: 500 })
   }
 }

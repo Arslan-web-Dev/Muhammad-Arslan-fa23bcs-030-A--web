@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { DUMMY_ADS } from '@/lib/dummy-data'
-import { MoreHorizontal, PlusCircle, ExternalLink, Edit } from 'lucide-react'
+import { PlusCircle, ExternalLink, Edit } from 'lucide-react'
 
 export default function MyAdsPage() {
   return (
@@ -65,7 +65,7 @@ export default function MyAdsPage() {
             {DUMMY_ADS.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="h-48 text-center text-muted-foreground font-medium">
-                  You haven't posted any ads yet.
+                  You haven&apos;t posted any ads yet.
                 </TableCell>
               </TableRow>
             )}

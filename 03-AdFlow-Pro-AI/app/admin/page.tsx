@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { BadgeDollarSign, Clock3, MousePointerClick, Wallet2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -49,7 +49,7 @@ export default function AdminPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-5xl font-extrabold tracking-tight text-white">Admin Dashboard</h1>
-          <p className="mt-2 text-xl text-slate-300">Welcome back. Here's what's happening with your marketplace today.</p>
+          <p className="mt-2 text-xl text-slate-300">Welcome back. Here&apos;s what&apos;s happening with your marketplace today.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="secondary" className="h-14 rounded-2xl border border-white/5 bg-white/10 px-6 text-lg font-semibold text-white hover:bg-white/15">Last 30 Days</Button>

@@ -1,21 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import type { SVGProps } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { DUMMY_ADS } from '@/lib/dummy-data'
-import { CheckCircle2, XCircle, Flag, Eye, Search } from 'lucide-react'
+import { CheckCircle2, XCircle, Eye, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import Link from 'next/link'
 
 export default function ReviewQueuePage() {
-  const [selectedAdId, setSelectedAdId] = useState<string | null>(null)
-  
   const handleApprove = () => {
     toast.success('Ad approved. Moving to payment pipeline.')
   }
@@ -109,7 +107,7 @@ export default function ReviewQueuePage() {
   )
 }
 
-function ShieldAlert(props: any) {
+function ShieldAlert(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

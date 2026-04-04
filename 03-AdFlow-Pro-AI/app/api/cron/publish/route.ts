@@ -19,7 +19,7 @@ export async function POST() {
       expired_count: 2,
       timestamp: new Date().toISOString()
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false, error: 'Failed to run cron job' }, { status: 500 })
   }
 }
